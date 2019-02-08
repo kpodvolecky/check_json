@@ -162,10 +162,10 @@ foreach my $attribute (sort keys %attributes){
 
     if ($attributes{$attribute}{'divisor'}) {
         $check_value = $check_value/$attributes{$attribute}{'divisor'};
-}
+    }
 
-if (defined $np->opts->expect && $np->opts->expect ne $check_value) {
-    $np->nagios_exit(CRITICAL, "Expected value (" . $np->opts->expect . ") not found. Actual: " . $check_value);
+    if (defined $np->opts->expect && $np->opts->expect ne $check_value) {
+        $np->nagios_exit(CRITICAL, "Expected value (" . $np->opts->expect . ") not found. Actual: " . $check_value);
     }
 
     if ( $check_value eq "true" or $check_value eq "false" ) {
