@@ -18,7 +18,6 @@ my $np = Nagios::Plugin->new(
     . "[ -d|--divisor <divisor> ] "
     . "[ -m|--metadata <content> ] "
     . "[ -T|--contenttype <content-type> ] "
-    . "[ --ignoressl ] "
     . "[ -h|--help ] ",
     version => '0.5',
     blurb   => 'Nagios plugin to check JSON attributes via http(s)',
@@ -94,11 +93,6 @@ $np->add_arg(
     . "Content-type accepted if different from application/json ",
 );
 
-$np->add_arg(
-    spec => 'ignoressl',
-    help => "--ignoressl\n   Ignore bad ssl certificates",
-);
-
 ## Parse @ARGV and process standard arguments (e.g. usage, help, version)
 $np->getopts;
 if ($np->opts->verbose) { (print Dumper ($np))};
@@ -112,10 +106,6 @@ $ua->default_header('Accept' => 'application/json');
 $ua->protocols_allowed( [ 'http', 'https'] );
 $ua->parse_head(0);
 $ua->timeout($np->opts->timeout);
-
-if ($np->opts->ignoressl) {
-    $ua->ssl_opts(verify_hostname => 0, SSL_verify_mode => 0x00);
-}
 
 if ($np->opts->verbose) { (print Dumper ($ua))};
 
